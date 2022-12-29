@@ -1,10 +1,13 @@
 package Screens;
 
 import Requests.ImageRequest;
+import Utils.DownloadImage;
 import Utils.LoadImage;
 
 public class MainForm extends javax.swing.JFrame {
 
+    private String urlImage;
+    
     public MainForm() {
         initComponents();
     }
@@ -18,6 +21,7 @@ public class MainForm extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Random dogs Image");
 
         lblImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -70,13 +74,16 @@ public class MainForm extends javax.swing.JFrame {
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
         ImageRequest imageRequest = new ImageRequest();
+        urlImage = imageRequest.getDogImage().getMessage();
+        
         LoadImage loadImage = new LoadImage();
-        loadImage.loadImage(imageRequest.getDogImage(), lblImage);
+        loadImage.loadImage(urlImage, lblImage);
     }//GEN-LAST:event_btnLoadActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        
+        DownloadImage imageDownload = new DownloadImage();
+        imageDownload.downloadImage(urlImage);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     public static void main(String args[]) {

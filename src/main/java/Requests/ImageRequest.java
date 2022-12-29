@@ -8,34 +8,38 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ImageRequest {
-    
-    public String getDogImage(){
-  
-        Gson gson = new Gson();
-        ImageObject imageObject = null;
-        
+
+    private Gson gson = new Gson();
+    private ImageObject imageObject = null;
+    private String responseBody = "";
+    private int responseCode = 0;
+    private HttpResponse<String> response = null;
+    private HttpClient client = null;
+
+    public ImageObject getDogImage() {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://dog.ceo/api/breeds/image/random"))
                 .GET()
                 .build();
-        
-        HttpClient client = HttpClient.newHttpClient();       
-        HttpResponse<String> response = null;
-        
+
+        client = HttpClient.newHttpClient();
+        response = null;
+
         try {
+
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) { 
-            System.err.println("There has been an error with the quest");
+            responseBody = response.body();
+            responseCode = response.statusCode();
+        } catch (Exception e) {
+            System.err.println("There was an error with the image");
         }
-        
-        String responseBody = response.body();
-        int responseCode = response.statusCode();
-        
+
         if (responseCode == 200) {
             imageObject = gson.fromJson(responseBody, ImageObject.class);
         }
-        
-        return imageObject.getMessage();
+
+        return imageObject;
     }
-    
+
 }
